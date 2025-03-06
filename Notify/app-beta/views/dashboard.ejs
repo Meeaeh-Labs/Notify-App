@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Ntfy Task Server</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+      .user-info {
+         position: absolute;
+         top: 10px;
+         right: 10px;
+         font-size: 0.9em;
+         color: #fff;
+      }
+    </style>
+</head>
+<body>
+    <div class="user-info">
+      Logged in as: <%= user.email %>
+    </div>
+    <h1>Dashboard</h1>
+    
+    <!-- Buttons container with flexbox -->
+    <div class="button-container">
+        <form action="/tasks/new" method="get">
+            <button type="submit">Create New Task</button>
+        </form>
+        <form action="/user-urls" method="get">
+            <button type="submit">Edit URL's</button>
+        </form>
+        <% if (user && user.role === 'admin') { %>
+           <form action="/admin/dashboard" method="get">
+               <button type="submit">Admin Dash</button>
+           </form>
+        <% } else { %>
+           <form action="/change-password" method="get">
+               <button type="submit">Change Password</button>
+           </form>
+        <% } %>
+        <form action="/logout" method="get">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <!-- Container with side padding -->
+    <div style="width: 90%; margin: 0 auto; padding: 0 20px;">
+        <table border="1" style="width:100%; margin: 0 auto;">
+          <tr>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Priority</th>
+            <th>Scheduled Time</th>
+            <th>Status</th>
+            <th>Recurring</th>
+            <th>Actions</th>
+          </tr>
+          <% tasks.forEach(function(task) { %>
+            <tr>
+              <td><%= task.title %></td>
+              <td><%= task.message %></td>
+              <td>
+                <% if (task.priority == 5) { %>
+                  🚨
+                <% } else if (task.priority == 4) { %>
+                  🔔
+                <% } else if (task.priority == 3) { %>
+                  ⭐
+                <% } else if (task.priority == 2) { %>
+                  ⬇️
+                <% } else if (task.priority == 1) { %>
+                  😴
+                <% } else { %>
+                  <%= task.priority %>
+                <% } %>
+              </td>
+              <td><%= task.scheduledTime.toLocaleString() %></td>
+              <td><%= task.status %></td>
+              <td><%= task.recurring ? task.recurrence : 'No' %></td>
+              <td>
+                <% if(task.status === 'pending') { %>
+                  <form action="/tasks/<%= task._id %>/edit" method="get">
+                      <button type="submit">Edit</button>
+                  </form>
+                <% } else { %>
+                  Sent
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </table>
+    </div>
+</body>
+</html>

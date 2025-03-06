@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create User - Admin - Ntfy Task Server</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Create New User</h1>
+    <% if (error) { %>
+      <p style="color:red;"><%= error %></p>
+    <% } %>
+    <form action="/admin/create" method="post">
+      <label>Email:</label>
+      <input type="email" name="email" required>
+      <br>
+      <label>Password:</label>
+      <input type="password" name="password" required>
+      <br>
+      <label>Role:</label>
+      <select name="role" required>
+          <option value="user" selected>User</option>
+          <option value="admin">Admin</option>
+      </select>
+      <br>
+      <button type="submit">Create User</button>
+    </form>
+    <form action="/admin/dashboard" method="get">
+      <button type="submit">Back to Admin Dashboard</button>
+    </form>
+</body>
+</html>

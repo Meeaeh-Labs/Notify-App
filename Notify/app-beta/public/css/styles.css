@@ -1,0 +1,239 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2f;
+    color: #e0e0e0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Container Box */
+.container {
+    background-color: #2a2a3d;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    text-align: center;
+}
+
+/* Headings (Login, Signup, Create Task, etc.) */
+h1, h2 {
+    margin-bottom: 25px; /* Adds space between title and inputs */
+}
+
+/* Input Fields */
+input, textarea {
+    margin-bottom: 20px; /* Extra spacing */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #3b3b54;
+    color: #ffffff;
+}
+
+/* Buttons */
+button {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    display: inline-block;
+    margin: 10px 5px;
+}
+
+button:hover {
+    background-color: #ff4f4f;
+}
+
+/* Fix for "Back to Dashboard" link */
+.back-link {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #ff6b6b;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Dashboard Layout Fix */
+.dashboard {
+    width: 90%;
+    max-width: 800px;
+    background-color: #2a2a3d;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Dashboard Title */
+.dashboard h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Task Controls (Create New + Logout) */
+.task-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.task-controls button {
+    width: 45%;
+    font-size: 14px;
+}
+
+/* Task List */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Task Item Styling */
+.task-item {
+    background-color: #3b3b54;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #3b3b54;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table, th, td {
+    border: 1px solid #444;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #2a2a3d;
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+td {
+    background-color: #3b3b54;
+}
+
+tr:hover td {
+    background-color: #47476a;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.button-container form {
+    margin-right: 10px;
+}
+
+select, .dropdown {
+    margin-bottom: 20px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #3b3b54;
+    color: #ffffff;
+}
+
+/* Custom checkbox styling */
+input[type="checkbox"] {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    background-color: #3b3b54;
+    border: 1px solid #444;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    margin-right: 5px;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #ff6b6b;
+    border-color: #ff4f4f;
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    top: 0px;
+    left: 3px;
+}
+
+/* Switch styling */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    vertical-align: middle;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  
+  input:checked + .slider {
+    background-color: #66bb6a;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  

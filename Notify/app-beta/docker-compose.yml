@@ -1,0 +1,36 @@
+services:
+  app:
+    image: meeaehlabs/notify:beta
+    ports:
+      - "3000:3000"
+    environment:
+      # Use the admin credentials; note the URL encoding for special characters in the password
+      - MONGODB_URI=mongodb://admin:AdMinPASssW0Rd@mongo:27017/ntfyTaskDB?authSource=admin
+      # The SESSION_SECRET environment variable is used by the Express session middleware to sign and secure session cookies. 
+      # Essentially, it ensures that session data cannot be tampered with.
+      #and if not set, falls back to a default. 
+      # In production, you should use a strong, unique secret to protect your sessions.
+      - SESSION_SECRET=G#7vKp9@dX&2zLmQ
+    depends_on:
+      - mongo
+    networks:
+      - internal
+
+  mongo:
+    image: mongo:5
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=AdMinPASssW0Rd
+      - MONGO_INITDB_DATABASE=ntfyTaskDB
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+
+volumes:
+  mongo-data:

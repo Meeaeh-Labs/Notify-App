@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - Ntfy Task Server</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+      /* Add padding on both sides of the table */
+      .table-container {
+        padding: 20px;
+      }
+      /* Make the table full-width */
+      .table-container table {
+        width: 100%;
+      }
+      /* Container for inline forms */
+      .inline-form {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .inline-form input[type="password"],
+      .inline-form select {
+        width: 150px;
+      }
+      /* Style for the logged-in user info */
+      .user-info {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.9em;
+        color: #fff;
+      }
+      /* Header container for left and right groups */
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+      }
+      .header-left, .header-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      /* Switch styling for settings */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: #66bb6a;
+      }
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+    </style>
+</head>
+<body>
+    <!-- Top right user info -->
+    <div class="user-info">
+      Logged in as: <%= currentUser.email %>
+    </div>
+    
+    <h1>Admin Dashboard</h1>
+    
+    <!-- Header container with left and right groups -->
+    <div class="header-container">
+      <div class="header-left">
+        <!-- Settings form to disable signup -->
+        <form action="/admin/settings" method="post" style="display: inline;">
+          <label class="switch">
+            <input type="checkbox" name="disableSignup" <%= setting.disableSignup ? 'checked' : '' %>>
+            <span class="slider round"></span>
+          </label>
+          <span>Disable Signup on Login Page</span>
+          <button type="submit">Save Settings</button>
+        </form>
+        <!-- Create User button -->
+        <form action="/admin/create" method="get" style="display: inline;">
+          <button type="submit">Create User</button>
+        </form>
+      </div>
+      <div class="header-right">
+        <!-- Back to User Dashboard -->
+        <form action="/dashboard" method="get" style="display: inline;">
+          <button type="submit">Back to User Dashboard</button>
+        </form>
+        <!-- Logout -->
+        <form action="/logout" method="get" style="display: inline;">
+          <button type="submit">Logout</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <table>
+          <tr>
+              <th>User Email</th>
+              <th>Role</th>
+              <th>Edit Role</th>
+              <th>Manage Password</th>
+              <th>Manage</th>
+          </tr>
+          <% users.forEach(function(user) { %>
+              <tr>
+                  <td><%= user.email %></td>
+                  <td>
+                    <% if (user.role === 'admin') { %>
+                      Administrator Account
+                    <% } else { %>
+                      Standard User
+                    <% } %>
+                  </td>
+                  <td>
+                    <!-- Edit Role inline form -->
+                    <form action="/admin/users/<%= user._id %>/change-role" method="post" class="inline-form"
+                          onsubmit="return confirm('Are you sure you want to change <%= user.email %> to this role?');">
+                        <select name="newRole" required>
+                            <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>User</option>
+                            <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                        </select>
+                        <button type="submit">Change Role</button>
+                    </form>
+                  </td>
+                  <td>
+                    <!-- Manage Password inline form -->
+                    <form action="/admin/users/<%= user._id %>/change-password" method="post" class="inline-form">
+                        <input type="password" name="newPassword" placeholder="New Password" required>
+                        <button type="submit">Change Password</button>
+                    </form>
+                  </td>
+                  <td>
+                    <!-- Delete User button (only if not current user) -->
+                    <% if (user._id.toString() !== session.userId) { %>
+                      <form action="/admin/users/<%= user._id %>/delete" method="post"
+                            onsubmit="return confirm('Are you sure you want to delete this user: <%= user.email %>?');">
+                          <button type="submit">Delete User</button>
+                      </form>
+                    <% } else { %>
+                      N/A
+                    <% } %>
+                  </td>
+              </tr>
+          <% }); %>
+      </table>
+    </div>
+</body>
+</html>
