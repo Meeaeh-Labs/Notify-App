@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create New Task - Ntfy Task Server</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Create New Task</h1>
+    <% if (error) { %>
+      <p style="color:red;"><%= error %></p>
+    <% } %>
+    <form action="/tasks/new" method="post" enctype="multipart/form-data">
+      <label>Title:</label>
+      <input type="text" name="title" required>
+      <br>
+      <label>Message:</label>
+      <textarea name="message"></textarea>
+      <br>
+      <label>Scheduled Time:</label>
+      <input type="datetime-local" name="scheduledTime" required>
+      <br>
+      <label>Ntfy URL:</label>
+      <select name="ntfyUrlSelect" id="ntfyUrlSelect" class="dropdown" required>
+          <% if (typeof userUrls !== 'undefined' && userUrls.length > 0) { %>
+              <% userUrls.forEach(function(urlObj){ %>
+                  <option value="<%= urlObj.url %>"><%= urlObj.url %></option>
+              <% }); %>
+              <option value="other">Other</option>
+          <% } else { %>
+              <option value="other" selected>Other</option>
+          <% } %>
+      </select>
+      <div id="otherUrlDiv" style="display: none;">
+          <input type="url" name="ntfyUrlOther" id="ntfyUrlOther" class="input" placeholder="Enter custom URL">
+      </div>
+      <br>
+      <div class="checkbox-container">
+          <label for="recurringCheckbox">Make Recurring:</label>
+          <input type="checkbox" name="recurring" id="recurringCheckbox">
+      </div>
+      <div id="recurrenceOptions" style="display: none;">
+         <label>Recurrence Frequency:</label>
+         <select name="recurrence">
+            <option value="hourly" selected>Hourly</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+         </select>
+      </div>
+      <br>
+      <label>File (max 2MB):</label>
+      <input type="file" name="file">
+      <br>
+      <button type="submit">Create Task</button>
+    </form>
+    <form action="/dashboard" method="get">
+      <button type="submit">Back to Dashboard</button>
+    </form>
+    <script>
+      document.getElementById('recurringCheckbox').addEventListener('change', function() {
+         document.getElementById('recurrenceOptions').style.display = this.checked ? 'block' : 'none';
+      });
+      document.getElementById('ntfyUrlSelect').addEventListener('change', function() {
+          var otherDiv = document.getElementById('otherUrlDiv');
+          if (this.value === 'other') {
+              otherDiv.style.display = 'block';
+              document.getElementById('ntfyUrlOther').required = true;
+          } else {
+              otherDiv.style.display = 'none';
+              document.getElementById('ntfyUrlOther').required = false;
+          }
+      });
+      window.addEventListener('load', function() {
+          var select = document.getElementById('ntfyUrlSelect');
+          if (select.value === 'other') {
+              document.getElementById('otherUrlDiv').style.display = 'block';
+              document.getElementById('ntfyUrlOther').required = true;
+          }
+      });
+    </script>
+</body>
+</html>
